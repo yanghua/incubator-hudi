@@ -3,10 +3,12 @@ package org.apache.hudi.common.rdd;
 import com.codahale.metrics.Timer;
 import org.apache.hudi.common.HoodieEngineContext;
 import org.apache.hudi.common.HoodieWriteClientV2;
+import org.apache.hudi.common.HoodieWriteInput;
 import org.apache.hudi.common.model.HoodieRecord;
 import org.apache.hudi.common.model.HoodieRecordPayload;
 import org.apache.hudi.config.HoodieWriteConfig;
-import org.apache.hudi.index.HoodieIndex;
+import org.apache.hudi.index.v2.HoodieIndexV2;
+import org.apache.hudi.index.v2.HoodieIndexV2Factory;
 import org.apache.hudi.metrics.HoodieMetrics;
 import org.apache.hudi.table.HoodieTable;
 
@@ -15,7 +17,7 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
 
 
   private final transient HoodieMetrics metrics;
-  private final transient HoodieIndex<T> index;
+  private final transient HoodieIndexV2<HoodieWriteInput, HoodieWriteRDDInput> index;
   protected final HoodieWriteConfig config;
   private final transient HoodieEngineRDDContext context;
   private static final String LOOKUP_STR = "lookup";
@@ -24,7 +26,7 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
     this.context = context;
     this.config = config;
     this.metrics = new HoodieMetrics(config, config.getTableName());
-    this.index = HoodieIndex.createIndex(config, context.getRddContext());
+    this.index = HoodieIndexV2Factory.createHoodieIndex(config, context);
   }
 
   @Override
@@ -44,9 +46,13 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
     // Create a Hoodie table which encapsulated the commits and files visible
     HoodieTable<T> table = HoodieTable.create(config, context.getRddContext());
     Timer.Context indexTimer = metrics.getIndexCtx();
-    HoodieWriteRDDInput<HoodieRecord<T>> recordsWithLocation = getIndex().tagLocation(hoodieRecords, context.getRddContext(), table);
+    HoodieWriteRDDInput recordsWithLocation = (HoodieWriteRDDInput) getIndex().tagLocation(hoodieRecords, context, table);
     metrics.updateIndexMetrics(LOOKUP_STR, metrics.getDurationInMs(indexTimer == null ? 0L : indexTimer.stop()));
-    return context.filterUnknownLocations(recordsWithLocation);
+
+    HoodieWriteRDDInput<HoodieRecord<T>> input = new HoodieWriteRDDInput<>();
+    input.setInputs(context.filterUnknownLocations(recordsWithLocation).getRecordJavaRDD());
+
+    return input;
   }
 
   @Override
@@ -78,9 +84,7 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
     return context;
   }
 
-  public HoodieIndex<T> getIndex() {
+  public HoodieIndexV2 getIndex() {
     return index;
   }
-
-
 }

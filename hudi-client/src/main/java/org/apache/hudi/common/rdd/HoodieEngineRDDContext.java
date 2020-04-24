@@ -9,14 +9,6 @@ public class HoodieEngineRDDContext<T extends HoodieRecordPayload> implements Ho
 
   private JavaSparkContext rddContext;
 
-  @Override
-  public HoodieWriteRDDInput<HoodieRecord<T>> filterUnknownLocations(
-      HoodieWriteRDDInput<HoodieRecord<T>> taggedRecords) {
-    HoodieWriteRDDInput<HoodieRecord<T>> result = new HoodieWriteRDDInput<>();
-    result.setInputs(taggedRecords.getInputs().filter(v1 -> !v1.isCurrentLocationKnown()));
-
-    return result;
-  }
 
   public JavaSparkContext getRddContext() {
     return rddContext;
@@ -24,5 +16,13 @@ public class HoodieEngineRDDContext<T extends HoodieRecordPayload> implements Ho
 
   public void setRddContext(JavaSparkContext rddContext) {
     this.rddContext = rddContext;
+  }
+
+  @Override
+  public HoodieWriteRDDOutput filterUnknownLocations(
+          HoodieWriteRDDInput<HoodieRecord<T>> taggedRecords) {
+    HoodieWriteRDDOutput<T> output = new HoodieWriteRDDOutput<>();
+    output.setRecordJavaRDD(taggedRecords.getInputs().filter(v1 -> !v1.isCurrentLocationKnown()));
+    return output;
   }
 }
