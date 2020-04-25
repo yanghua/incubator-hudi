@@ -10,7 +10,7 @@ import org.apache.hudi.config.HoodieWriteConfig;
 import org.apache.hudi.index.v2.HoodieIndexV2;
 import org.apache.hudi.index.v2.HoodieIndexV2Factory;
 import org.apache.hudi.metrics.HoodieMetrics;
-import org.apache.hudi.table.HoodieTable;
+import org.apache.hudi.table.v2.HoodieTableV2;
 
 public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
     HoodieWriteClientV2<HoodieWriteRDDInput<HoodieRecord<T>>, HoodieWriteRDDOutput> {
@@ -44,15 +44,15 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
   @Override
   public HoodieWriteRDDInput<HoodieRecord<T>> filterExists(HoodieWriteRDDInput<HoodieRecord<T>> hoodieRecords) {
     // Create a Hoodie table which encapsulated the commits and files visible
-    HoodieTable<T> table = HoodieTable.create(config, context.getRddContext());
+    HoodieTableV2<T> table = HoodieTableV2.create(config, context);
     Timer.Context indexTimer = metrics.getIndexCtx();
-    HoodieWriteRDDInput recordsWithLocation = (HoodieWriteRDDInput) getIndex().tagLocation(hoodieRecords, context, table);
+    HoodieWriteRDDInput recordsWithLocation = getIndex().tagLocation(hoodieRecords, context, table);
     metrics.updateIndexMetrics(LOOKUP_STR, metrics.getDurationInMs(indexTimer == null ? 0L : indexTimer.stop()));
 
     HoodieWriteRDDInput<HoodieRecord<T>> input = new HoodieWriteRDDInput<>();
     input.setInputs(context.filterUnknownLocations(recordsWithLocation).getRecordJavaRDD());
 
-    return input;
+    return recordsWithLocation;
   }
 
   @Override
@@ -84,7 +84,7 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
     return context;
   }
 
-  public HoodieIndexV2 getIndex() {
+  public HoodieIndexV2<HoodieWriteInput, HoodieWriteRDDInput> getIndex() {
     return index;
   }
 }
