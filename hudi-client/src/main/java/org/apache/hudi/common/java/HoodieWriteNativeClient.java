@@ -74,7 +74,7 @@ public class HoodieWriteNativeClient<T extends HoodieRecordPayload> implements
 
     @Override
     public HoodieEngineContext<HoodieWriteNativeInput<HoodieRecord<T>>, HoodieWriteNativeOutput> getEngineContext() {
-        return null;
+        return context;
     }
 
     public HoodieIndexV2<HoodieWriteInput, HoodieWriteNativeInput> getIndex() {

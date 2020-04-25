@@ -6,25 +6,29 @@ import org.apache.hudi.common.model.HoodieRecord;
 import org.apache.hudi.common.model.HoodieRecordPayload;
 import org.apache.spark.api.java.JavaRDD;
 
-public class HoodieWriteRDDOutput<T extends HoodieRecordPayload> implements HoodieWriteOutput {
+public class HoodieWriteRDDOutput<T extends HoodieRecordPayload> implements HoodieWriteOutput<JavaRDD<WriteStatus>, JavaRDD<HoodieRecord<T>>> {
 
   private JavaRDD<WriteStatus> output;
 
-  private JavaRDD<HoodieRecord<T>> recordJavaRDD;
+  private JavaRDD<HoodieRecord<T>> records;
 
-  public JavaRDD<WriteStatus> getOutput() {
-    return output;
-  }
-
+  @Override
   public void setOutput(JavaRDD<WriteStatus> output) {
     this.output = output;
   }
 
-  public JavaRDD<HoodieRecord<T>> getRecordJavaRDD() {
-    return recordJavaRDD;
+  @Override
+  public void setRecords(JavaRDD<HoodieRecord<T>> records) {
+    this.records = records;
+  }
+  
+  @Override
+  public JavaRDD<WriteStatus> getOutput() {
+    return output;
   }
 
-  public void setRecordJavaRDD(JavaRDD<HoodieRecord<T>> recordJavaRDD) {
-    this.recordJavaRDD = recordJavaRDD;
+  @Override
+  public JavaRDD<HoodieRecord<T>> getRecords() {
+    return records;
   }
 }

@@ -22,7 +22,7 @@ public class HoodieEngineRDDContext<T extends HoodieRecordPayload> implements Ho
   public HoodieWriteRDDOutput filterUnknownLocations(
           HoodieWriteRDDInput<HoodieRecord<T>> taggedRecords) {
     HoodieWriteRDDOutput<T> output = new HoodieWriteRDDOutput<>();
-    output.setRecordJavaRDD(taggedRecords.getInputs().filter(v1 -> !v1.isCurrentLocationKnown()));
+    output.setRecords(taggedRecords.getInputs().filter(v1 -> !v1.isCurrentLocationKnown()));
     return output;
   }
 }

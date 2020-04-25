@@ -4,7 +4,7 @@ import org.apache.hudi.common.HoodieEngineContext;
 import org.apache.hudi.config.HoodieWriteConfig;
 
 public class HoodieIndexV2Factory {
-    public static HoodieIndexV2 createHoodieIndex(HoodieWriteConfig config, HoodieEngineContext context) {
-        return new HoodieBloomIndexV2();
+    public static <IN> HoodieIndexV2 createHoodieIndex(HoodieWriteConfig config, HoodieEngineContext context) {
+        return new HoodieBloomIndexV2<IN>();
     }
 }

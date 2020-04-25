@@ -2,21 +2,22 @@ package org.apache.hudi.index.v2;
 
 import org.apache.hudi.common.HoodieEngineContext;
 import org.apache.hudi.common.HoodieWriteInput;
-import org.apache.hudi.table.HoodieTable;
+import org.apache.hudi.table.v2.HoodieTableV2;
 
-public class HoodieBloomIndexV2 implements HoodieIndexV2<HoodieWriteInput, HoodieWriteInput> {
+public class HoodieBloomIndexV2<IN> implements HoodieIndexV2<HoodieWriteInput<IN>, HoodieWriteInput<IN>> {
+
     @Override
-    public HoodieWriteInput fetchRecordLocation(HoodieWriteInput inputs) {
+    public HoodieWriteInput<IN> fetchRecordLocation(HoodieWriteInput<IN> inputs) {
         return null;
     }
 
     @Override
-    public HoodieWriteInput tagLocation(HoodieWriteInput inputs, HoodieEngineContext context, HoodieTable table) {
+    public HoodieWriteInput<IN> tagLocation(HoodieWriteInput<IN> inputs, HoodieEngineContext context, HoodieTableV2 table) {
         return null;
     }
 
     @Override
-    public HoodieWriteInput updateLocation(HoodieWriteInput inputs) {
+    public HoodieWriteInput<IN> updateLocation(HoodieWriteInput<IN> inputs) {
         return null;
     }
 }
