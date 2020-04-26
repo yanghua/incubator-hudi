@@ -17,10 +17,6 @@ public class HoodieWriteRDDOutput<T extends HoodieRecordPayload> implements Hood
     this.output = output;
   }
 
-  public void setOutput(JavaRDD<WriteStatus> output) {
-    this.output = output;
-  }
-
   @Override
   public JavaRDD<WriteStatus> getOutput() {
     return output;

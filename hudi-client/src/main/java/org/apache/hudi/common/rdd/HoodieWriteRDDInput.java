@@ -7,7 +7,9 @@ public class HoodieWriteRDDInput<T> implements HoodieWriteInput<JavaRDD<T>> {
 
   private JavaRDD<T> inputs;
 
-  public HoodieWriteRDDInput() {}
+  public HoodieWriteRDDInput() {
+    this(null);
+  }
 
   public HoodieWriteRDDInput(JavaRDD<T> inputs) {
     this.inputs = inputs;
@@ -16,9 +18,5 @@ public class HoodieWriteRDDInput<T> implements HoodieWriteInput<JavaRDD<T>> {
   @Override
   public JavaRDD<T> getInputs() {
     return inputs;
-  }
-
-  public void setInputs(JavaRDD<T> inputs) {
-    this.inputs = inputs;
   }
 }

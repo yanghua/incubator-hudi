@@ -17,8 +17,4 @@ public class HoodieWriteNativeOutput<T extends HoodieRecordPayload> implements H
     public Iterable<WriteStatus> getOutput() {
         return output;
     }
-
-    public void setOutput(Iterable<WriteStatus> output) {
-        this.output = output;
-    }
 }

@@ -6,13 +6,10 @@ public class HoodieWriteNativeInput<T> implements HoodieWriteInput<Iterable<T>> 
     private Iterable<T> inputs;
 
     public HoodieWriteNativeInput() {
+        this(null);
     }
 
     public HoodieWriteNativeInput(Iterable<T> inputs) {
-        this.inputs = inputs;
-    }
-
-    public void setInputs(Iterable<T> inputs) {
         this.inputs = inputs;
     }
 

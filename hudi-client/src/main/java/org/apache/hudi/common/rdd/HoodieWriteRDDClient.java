@@ -49,10 +49,8 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
     HoodieWriteRDDInput recordsWithLocation = getIndex().tagLocation(hoodieRecords, context, table);
     metrics.updateIndexMetrics(LOOKUP_STR, metrics.getDurationInMs(indexTimer == null ? 0L : indexTimer.stop()));
 
-    HoodieWriteRDDInput<HoodieRecord<T>> input = new HoodieWriteRDDInput<>();
-    input.setInputs(context.filterUnknownLocations(recordsWithLocation).getInputs());
+    return new HoodieWriteRDDInput<>(context.filterUnknownLocations(recordsWithLocation).getInputs());
 
-    return recordsWithLocation;
   }
 
   @Override

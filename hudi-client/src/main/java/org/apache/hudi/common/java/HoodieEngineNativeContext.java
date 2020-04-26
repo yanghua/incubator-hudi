@@ -11,10 +11,8 @@ public class HoodieEngineNativeContext<T extends HoodieRecordPayload> implements
 
     @Override
     public HoodieWriteNativeInput filterUnknownLocations(HoodieWriteNativeInput<HoodieRecord<T>> taggedRecords) {
-        HoodieWriteNativeInput<HoodieRecord<T>> input = new HoodieWriteNativeInput();
         Iterable<HoodieRecord<T>> filterd = StreamSupport.stream(taggedRecords.getInputs().spliterator(), false)
                         .filter(v -> !v.isCurrentLocationKnown()).collect(Collectors.toList());
-        input.setInputs(filterd);
-        return input;
+        return new HoodieWriteNativeInput(filterd);
     }
 }
