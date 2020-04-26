@@ -1,27 +1,22 @@
 package org.apache.hudi.common.rdd;
 
 import org.apache.hudi.common.HoodieWriteInput;
-import org.apache.hudi.common.model.HoodieKey;
 import org.apache.spark.api.java.JavaRDD;
 
-public class HoodieWriteRDDInput<T> implements HoodieWriteInput {
+public class HoodieWriteRDDInput<T> implements HoodieWriteInput<JavaRDD<T>> {
 
   private JavaRDD<T> inputs;
-  private JavaRDD<HoodieKey> keys;
 
-  public JavaRDD<T> getInputs() {
-    return inputs;
+  public HoodieWriteRDDInput() {
+    this(null);
   }
 
-  public void setInputs(JavaRDD<T> inputs) {
+  public HoodieWriteRDDInput(JavaRDD<T> inputs) {
     this.inputs = inputs;
   }
 
-  public JavaRDD<HoodieKey> getKeys() {
-    return keys;
-  }
-
-  public void setKeys(JavaRDD<HoodieKey> keys) {
-    this.keys = keys;
+  @Override
+  public JavaRDD<T> getInputs() {
+    return inputs;
   }
 }
