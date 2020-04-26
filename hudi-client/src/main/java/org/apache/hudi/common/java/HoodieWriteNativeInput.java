@@ -5,7 +5,13 @@ import org.apache.hudi.common.HoodieWriteInput;
 public class HoodieWriteNativeInput<T> implements HoodieWriteInput<Iterable<T>> {
     private Iterable<T> inputs;
 
-    @Override
+    public HoodieWriteNativeInput() {
+    }
+
+    public HoodieWriteNativeInput(Iterable<T> inputs) {
+        this.inputs = inputs;
+    }
+
     public void setInputs(Iterable<T> inputs) {
         this.inputs = inputs;
     }

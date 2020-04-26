@@ -47,7 +47,7 @@ public class HoodieWriteNativeClient<T extends HoodieRecordPayload> implements
         metrics.updateIndexMetrics(LOOKUP_STR, metrics.getDurationInMs(indexTimer == null ? 0L : indexTimer.stop()));
 
         HoodieWriteNativeInput<HoodieRecord<T>> input = new HoodieWriteNativeInput<>();
-        input.setInputs(context.filterUnknownLocations(recordsWithLocation).getRecords());
+        input.setInputs(context.filterUnknownLocations(recordsWithLocation).getInputs());
 
         return input;
     }
