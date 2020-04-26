@@ -19,10 +19,10 @@ public class HoodieEngineRDDContext<T extends HoodieRecordPayload> implements Ho
   }
 
   @Override
-  public HoodieWriteRDDOutput filterUnknownLocations(
+  public HoodieWriteRDDInput filterUnknownLocations(
           HoodieWriteRDDInput<HoodieRecord<T>> taggedRecords) {
-    HoodieWriteRDDOutput<T> output = new HoodieWriteRDDOutput<>();
-    output.setRecords(taggedRecords.getInputs().filter(v1 -> !v1.isCurrentLocationKnown()));
-    return output;
+    HoodieWriteRDDInput<HoodieRecord<T>> input = new HoodieWriteRDDInput();
+    input.setInputs(taggedRecords.getInputs().filter(v1 -> !v1.isCurrentLocationKnown()));
+    return input;
   }
 }

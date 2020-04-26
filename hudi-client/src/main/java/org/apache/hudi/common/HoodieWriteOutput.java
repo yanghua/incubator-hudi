@@ -1,12 +1,7 @@
 package org.apache.hudi.common;
 
-public interface HoodieWriteOutput<O, R> {
+public interface HoodieWriteOutput<O> {
     void setOutput(O outputs);
 
-    void setRecords(R records);
-
     O getOutput();
-
-    R getRecords();
-
 }

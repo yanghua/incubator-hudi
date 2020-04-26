@@ -10,11 +10,11 @@ import java.util.stream.StreamSupport;
 public class HoodieEngineNativeContext<T extends HoodieRecordPayload> implements HoodieEngineContext<HoodieWriteNativeInput<HoodieRecord<T>>, HoodieWriteNativeOutput> {
 
     @Override
-    public HoodieWriteNativeOutput<T> filterUnknownLocations(HoodieWriteNativeInput<HoodieRecord<T>> taggedRecords) {
-        HoodieWriteNativeOutput<T> output = new HoodieWriteNativeOutput<>();
+    public HoodieWriteNativeInput filterUnknownLocations(HoodieWriteNativeInput<HoodieRecord<T>> taggedRecords) {
+        HoodieWriteNativeInput<HoodieRecord<T>> input = new HoodieWriteNativeInput();
         Iterable<HoodieRecord<T>> filterd = StreamSupport.stream(taggedRecords.getInputs().spliterator(), false)
                         .filter(v -> !v.isCurrentLocationKnown()).collect(Collectors.toList());
-        output.setRecords(filterd);
-        return output;
+        input.setInputs(filterd);
+        return input;
     }
 }
