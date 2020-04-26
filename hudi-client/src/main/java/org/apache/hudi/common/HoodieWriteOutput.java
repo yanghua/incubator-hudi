@@ -1,6 +1,14 @@
 package org.apache.hudi.common;
 
-public interface HoodieWriteOutput<O> {
+public class HoodieWriteOutput<OUT> {
 
-    O getOutput();
+    private OUT output;
+
+    public HoodieWriteOutput(OUT output) {
+        this.output = output;
+    }
+
+    public OUT getOutput() {
+        return output;
+    }
 }
