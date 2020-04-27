@@ -9,17 +9,16 @@ import org.apache.hudi.common.model.HoodieRecordPayload;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
-public class HoodieEngineRDDContext<T extends HoodieRecordPayload> implements HoodieEngineContext<HoodieWriteInput<JavaRDD<HoodieRecord<T>>>, HoodieWriteOutput<JavaRDD<WriteStatus>>> {
+public class HoodieRDDEngineContext<T extends HoodieRecordPayload> implements HoodieEngineContext<HoodieWriteInput<JavaRDD<HoodieRecord<T>>>, HoodieWriteOutput<JavaRDD<WriteStatus>>> {
 
   private JavaSparkContext rddContext;
 
+  public HoodieRDDEngineContext(JavaSparkContext rddContext) {
+    this.rddContext = rddContext;
+  }
 
   public JavaSparkContext getRddContext() {
     return rddContext;
-  }
-
-  public void setRddContext(JavaSparkContext rddContext) {
-    this.rddContext = rddContext;
   }
 
   @Override

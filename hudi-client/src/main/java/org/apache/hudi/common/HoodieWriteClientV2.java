@@ -1,6 +1,6 @@
 package org.apache.hudi.common;
 
-public interface HoodieWriteClientV2<INPUT extends HoodieWriteInput, OUTPUT extends HoodieWriteOutput> {
+public interface HoodieWriteClientV2<INPUT extends HoodieWriteInput, Key extends HoodieWriteKey, OUTPUT extends HoodieWriteOutput> {
 
   OUTPUT upsert(INPUT hoodieRecords, final String instantTime);
 
@@ -14,7 +14,7 @@ public interface HoodieWriteClientV2<INPUT extends HoodieWriteInput, OUTPUT exte
 
   OUTPUT bulkInsert(INPUT records, final String instantTime);
 
-  OUTPUT delete(INPUT keys, final String instantTime);
+  OUTPUT delete(Key keys, final String instantTime);
 
   HoodieEngineContext<INPUT, OUTPUT> getEngineContext();
 

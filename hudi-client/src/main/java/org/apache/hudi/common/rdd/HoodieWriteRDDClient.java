@@ -5,7 +5,9 @@ import org.apache.hudi.client.WriteStatus;
 import org.apache.hudi.common.HoodieEngineContext;
 import org.apache.hudi.common.HoodieWriteClientV2;
 import org.apache.hudi.common.HoodieWriteInput;
+import org.apache.hudi.common.HoodieWriteKey;
 import org.apache.hudi.common.HoodieWriteOutput;
+import org.apache.hudi.common.model.HoodieKey;
 import org.apache.hudi.common.model.HoodieRecord;
 import org.apache.hudi.common.model.HoodieRecordPayload;
 import org.apache.hudi.config.HoodieWriteConfig;
@@ -16,16 +18,19 @@ import org.apache.hudi.table.v2.HoodieTableV2;
 import org.apache.spark.api.java.JavaRDD;
 
 public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
-    HoodieWriteClientV2<HoodieWriteInput<JavaRDD<HoodieRecord<T>>>, HoodieWriteOutput<JavaRDD<WriteStatus>>> {
-
+    HoodieWriteClientV2<
+        HoodieWriteInput<JavaRDD<HoodieRecord<T>>>,
+        HoodieWriteKey<JavaRDD<HoodieKey>>,
+        HoodieWriteOutput<JavaRDD<WriteStatus>>
+        > {
 
   private final transient HoodieMetrics metrics;
   private final transient HoodieIndexV2<HoodieWriteInput, HoodieWriteInput<JavaRDD<HoodieRecord<T>>>> index;
   protected final HoodieWriteConfig config;
-  private final transient HoodieEngineRDDContext context;
+  private final transient HoodieRDDEngineContext context;
   private static final String LOOKUP_STR = "lookup";
 
-  public HoodieWriteRDDClient(HoodieEngineRDDContext context, HoodieWriteConfig config) {
+  public HoodieWriteRDDClient(HoodieRDDEngineContext context, HoodieWriteConfig config) {
     this.context = context;
     this.config = config;
     this.metrics = new HoodieMetrics(config, config.getTableName());
@@ -76,7 +81,7 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
 
   @Override
   public HoodieWriteOutput<JavaRDD<WriteStatus>> delete(
-      HoodieWriteInput<JavaRDD<HoodieRecord<T>>> keys, String instantTime) {
+      HoodieWriteKey<JavaRDD<HoodieKey>> keys, String instantTime) {
     return null;
   }
 
