@@ -5,17 +5,22 @@ import org.apache.hudi.client.WriteStatus;
 import org.apache.hudi.common.HoodieEngineContext;
 import org.apache.hudi.common.HoodieWriteClientV2;
 import org.apache.hudi.common.HoodieWriteInput;
+import org.apache.hudi.common.HoodieWriteKey;
 import org.apache.hudi.common.HoodieWriteOutput;
+import org.apache.hudi.common.model.HoodieKey;
 import org.apache.hudi.common.model.HoodieRecord;
 import org.apache.hudi.common.model.HoodieRecordPayload;
 import org.apache.hudi.config.HoodieWriteConfig;
-import org.apache.hudi.index.v2.HoodieIndexV2;
+import org.apache.hudi.common.HoodieIndexV2;
 import org.apache.hudi.index.v2.HoodieIndexV2Factory;
 import org.apache.hudi.metrics.HoodieMetrics;
 import org.apache.hudi.table.v2.HoodieTableV2;
 
 public class HoodieWriteNativeClient<T extends HoodieRecordPayload> implements
-        HoodieWriteClientV2<HoodieWriteInput<Iterable<HoodieRecord<T>>>, HoodieWriteOutput<Iterable<WriteStatus>>> {
+        HoodieWriteClientV2<
+            HoodieWriteInput<Iterable<HoodieRecord<T>>>,
+            HoodieWriteKey<Iterable<HoodieKey>>,
+            HoodieWriteOutput<Iterable<WriteStatus>>> {
 
     private final transient HoodieMetrics metrics;
     private final transient HoodieIndexV2<HoodieWriteInput, HoodieWriteInput<Iterable<HoodieRecord<T>>>> index;
@@ -74,7 +79,7 @@ public class HoodieWriteNativeClient<T extends HoodieRecordPayload> implements
 
     @Override
     public HoodieWriteOutput<Iterable<WriteStatus>> delete(
-        HoodieWriteInput<Iterable<HoodieRecord<T>>> keys, String instantTime) {
+        HoodieWriteKey<Iterable<HoodieKey>> keys, String instantTime) {
         return null;
     }
 

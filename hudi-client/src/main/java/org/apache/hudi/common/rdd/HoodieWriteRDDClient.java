@@ -11,7 +11,7 @@ import org.apache.hudi.common.model.HoodieKey;
 import org.apache.hudi.common.model.HoodieRecord;
 import org.apache.hudi.common.model.HoodieRecordPayload;
 import org.apache.hudi.config.HoodieWriteConfig;
-import org.apache.hudi.index.v2.HoodieIndexV2;
+import org.apache.hudi.common.HoodieIndexV2;
 import org.apache.hudi.index.v2.HoodieIndexV2Factory;
 import org.apache.hudi.metrics.HoodieMetrics;
 import org.apache.hudi.table.v2.HoodieTableV2;
@@ -21,8 +21,7 @@ public class HoodieWriteRDDClient<T extends HoodieRecordPayload> implements
     HoodieWriteClientV2<
         HoodieWriteInput<JavaRDD<HoodieRecord<T>>>,
         HoodieWriteKey<JavaRDD<HoodieKey>>,
-        HoodieWriteOutput<JavaRDD<WriteStatus>>
-        > {
+        HoodieWriteOutput<JavaRDD<WriteStatus>>> {
 
   private final transient HoodieMetrics metrics;
   private final transient HoodieIndexV2<HoodieWriteInput, HoodieWriteInput<JavaRDD<HoodieRecord<T>>>> index;
